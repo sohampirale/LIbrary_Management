@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard | E-Library</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+        --primary-color: #4a6bff;
+        --secondary-color: #f8f9fa;
+        --accent-color: #ff6b6b;
+        --text-color: #333;
+        --light-text: #6c757d;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --nav-height: 70px;
+    }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f5f7fa;
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+    .navbar {
+        background: white;
+        height: var(--nav-height);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 5%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+    }
+    .logo i {
+        margin-right: 10px;
+        font-size: 28px;
+    }
+    .nav-links {
+        display: flex;
+        height: 100%;
+    }
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        height: 100%;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    .nav-links a:hover, .nav-links a.active {
+        color: var(--primary-color);
+    }
+    .nav-links a:hover:after, .nav-links a.active:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: var(--primary-color);
+    }
+    .nav-links i {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+    .user-profile {
+        display: flex;
+        align-items: center;
+    }
+    .user-profile img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        border: 2px solid var(--primary-color);
+    }
+    .user-name {
+        font-weight: 600;
+    }
+    .container {
+        width: 90%;
+        max-width: 1400px;
+        margin: 30px auto;
+    }
+    .welcome-banner {
+        background: linear-gradient(135deg, var(--primary-color), #6a5acd);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+    .welcome-text h1 {
+        font-size: 2.2rem;
+        margin: 0 0 10px;
+    }
+    .welcome-text p {
+        font-size: 1.1rem;
+        margin: 0;
+        opacity: 0.9;
+    }
+    .welcome-icon {
+        font-size: 80px;
+        opacity: 0.2;
+    }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        text-align: center;
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--primary-color);
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    .stat-card i {
+        font-size: 30px;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+    .stat-card h3 {
+        font-size: 14px;
+        color: var(--light-text);
+        margin-bottom: 10px;
+    }
+    .stat-card p {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+        color: var(--primary-color);
+    }
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    .book-card { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; transition: all 0.3s ease; }
+    .book-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); }
+    .book-cover { height: 200px; background: linear-gradient(45deg, #f3f4f6, #e5e7eb); display: flex; align-items: center; justify-content: center; color: var(--light-text); position: relative; }
+    .book-cover i { font-size: 60px; opacity: 0.5; }
+    .book-details { padding: 20px; }
+    .book-title { font-size: 18px; margin: 0 0 5px; font-weight: 600; }
+    .book-author { color: var(--light-text); font-size: 14px; margin-bottom: 15px; }
+    .book-meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--light-text); margin-bottom: 15px; }
+    .book-actions { display: flex; gap: 10px; }
+    .book-actions button { flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s ease; }
+    .buy-btn { background: var(--primary-color); color: white; }
+    .buy-btn:hover { background: #3a5bef; }
+    .rent-btn { background: #f0f0f0; color: var(--text-color); }
+    .rent-btn:hover { background: #e0e0e0; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo"><i class="fas fa-book-reader"></i> E-Library</div>
+    <div class="nav-links">
+      <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+      <a href="#"><i class="fas fa-book"></i> Books</a>
+      <a href="#"><i class="fas fa-history"></i> History</a>
+      <a href="#"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+    <div class="user-profile">
+      <img src="https://via.placeholder.com/40" alt="User Avatar" />
+      <span class="user-name">User Name</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="welcome-text">
+        <h1>Welcome, User Name!</h1>
+        <p>Here’s what you can do today.</p>
+      </div>
+      <div class="welcome-icon"><i class="fas fa-graduation-cap"></i></div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <i class="fas fa-book"></i>
+        <h3>Total Books</h3>
+        <p>1200</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-users"></i>
+        <h3>Users Registered</h3>
+        <p>1000</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-clock"></i>
+        <h3>Books Borrowed</h3>
+        <p>1500</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-credit-card"></i>
+        <h3>Penalties</h3>
+        <p>$50</p>
+      </div>
+    </div>
+
+    <!-- Books Available for Buy/Rent -->
+    <div class="books-grid">
+      <!-- Book Card Example -->
+      <div class="book-card">
+        <div class="book-cover">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="book-details">
+          <div class="book-title">The Great Gatsby</div>
+          <div class="book-author">F. Scott Fitzgerald</div>
+          <div class="book-meta">
+            <span>Fiction</span>
+            <span>1925</span>
+          </div>
+          <div class="book-actions">
+            <button class="buy-btn">Buy Now</button>
+            <button class="rent-btn">Rent Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Another Book Card Example -->
+      <div class="book-card">
+        <div class="book-cover">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="book-details">
+          <div class="book-title">1984</div>
+          <div class="book-author">George Orwell</div>
+          <div class="book-meta">
+            <span>Dystopian</span>
+            <span>1949</span>
+          </div>
+          <div class="book-actions">
+            <button class="buy-btn">Buy Now</button>
+            <button class="rent-btn">Rent Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <div class="section-title">Recent Activity</div>
+      <div class="activity-item">
+        <div class="activity-icon"><i class="fas fa-book-open"></i></div>
+        <div class="activity-details">
+          <h4>Bought "The Great Gatsby"</h4>
+          <p>Purchased on 12 April, 2025</p>
+        </div>
+        <div class="activity-time">2 hours ago</div>
+      </div>
+      <!-- Additional activity items can be added here -->
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 E-Library. All Rights Reserved.</p>
+  </footer>
+</body>
+<script>
+  // script.js
+
+// Simulate books data
+const books = [
+    { id: 1, title: "Book 1", author: "Author 1", price: 10 },
+    { id: 2, title: "Book 2", author: "Author 2", price: 15 },
+    { id: 3, title: "Book 3", author: "Author 3", price: 20 },
+];
+
+// Simulate login credentials
+const users = {
+    'user1': 'password123', // username: password
+};
+
+// Display books on the home page (index.html)
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('.book-list')) {
+        const bookListContainer = document.querySelector('.book-list');
+        books.forEach(book => {
+            const bookItem = document.createElement('div');
+            bookItem.classList.add('book-item');
+            bookItem.innerHTML = `
+                <h3>${book.title}</h3>
+                <p>${book.author}</p>
+                <p>$${book.price}</p>
+                <button onclick="addToCart(${book.id})">Add to Cart</button>
+                <button onclick="viewBook(${book.id})">View Book</button>
+            `;
+            bookListContainer.appendChild(bookItem);
+        });
+    }
+
+    if (document.querySelector('#cart-items')) {
+        const cartItemsContainer = document.querySelector('#cart-items');
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+        if (cartItems.length === 0) {
+            document.querySelector('#empty-cart-message').style.display = 'block';
+        } else {
+            cartItems.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <h3>${item.title}</h3>
+                    <p>${item.author}</p>
+                    <p>$${item.price}</p>
+                    <button onclick="removeFromCart(${item.id})">Remove</button>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+            document.querySelector('#checkout-btn').style.display = 'block';
+        }
+    }
+
+    if (document.querySelector('#book-history-list')) {
+        const bookHistoryList = document.querySelector('#book-history-list');
+        const bookHistory = JSON.parse(localStorage.getItem('bookHistory')) || [];
+
+        if (bookHistory.length === 0) {
+            const noHistory = document.createElement('li');
+            noHistory.textContent = 'No history available.';
+            bookHistoryList.appendChild(noHistory);
+        } else {
+            bookHistory.forEach(book => {
+                const historyItem = document.createElement('li');
+                historyItem.textContent = `${book.title} by ${book.author}`;
+                bookHistoryList.appendChild(historyItem);
+            });
+        }
+    }
+});
+
+// Add book to cart
+function addToCart(bookId) {
+    const book = books.find(book => book.id === bookId);
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(book);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    addToBookHistory(book); // Add to book history when added to cart
+}
+
+// Remove book from cart
+function removeFromCart(bookId) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => item.id !== bookId);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.location.reload(); // Refresh to update the cart view
+}
+
+// Handle login form submission (login.html)
+if (document.querySelector('#login-form')) {
+    const loginForm = document.querySelector('#login-form');
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.querySelector('#username').value;
+        const password = document.querySelector('#password').value;
+
+        if (users[username] && users[username] === password) {
+            localStorage.setItem('loggedIn', true);
+            window.location.href = 'index.html'; // Redirect to home page after successful login
+        } else {
+            document.querySelector('#error-message').textContent = 'Invalid username or password';
+        }
+    });
+}
+
+// View book and add it to book history (user-dashboard.html)
+function viewBook(bookId) {
+    const book = books.find(book => book.id === bookId);
+    addToBookHistory(book);
+}
+
+// Function to add book to history
+function addToBookHistory(book) {
+    const bookHistory = JSON.parse(localStorage.getItem('bookHistory')) || [];
+    if (!bookHistory.some(item => item.id === book.id)) {
+        bookHistory.push(book);
+        localStorage.setItem('bookHistory', JSON.stringify(bookHistory));
+    }
+}
+
+// Update username on the dashboard (user-dashboard.html)
+function updateUsername() {
+    const newUsername = document.querySelector('#username').value;
+    if (newUsername) {
+        localStorage.setItem('username', newUsername);
+        alert('Username updated successfully!');
+        window.location.reload();
+    } else {
+        alert('Please enter a valid username.');
+    }
+}
+
+// Checkout function (cart.html)
+function checkout() {
+    alert('Checkout successful! You can implement a real payment system later.');
+    localStorage.removeItem('cart');
+    window.location.href = 'index.html'; // Redirect to home page after checkout
+}
+
+</script>
+</html>
